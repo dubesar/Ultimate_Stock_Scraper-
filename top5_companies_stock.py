@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup 
+from bs4 import BeautifulSoup
 import csv
 import time
 import random
@@ -14,29 +14,23 @@ while True:
         quotes = []
         table = soup.find('div',attrs = {'id' : 'trending'})
         urlss = []
+        vals = ['cost','Gain_or_loss','Gain_or_loss(in percent)']
         for row in table.findAll('div',attrs = {'class':'marketChart'}):
-            quote = {}
-            quote['url'] = row.a['href']
+            quote = {'url': row.a['href']}
             urlss.append(quote)
             data = []
 
             for urls in urlss:
-                company = {}
                 new_url = 'https://www.investing.com'+urls['url']
                 new_response = requests.get(new_url,headers=headers)
                 new_soup = BeautifulSoup(new_response.content,'html.parser')
                 new_table = new_soup.find('h1',attrs = {'class': 'float_lang_base_1 relativeAttr'})
-                company['company_name'] = new_table.text
+                company = {'company_name': new_table.text}
                 new_table = new_soup.find('div',attrs = {'class': 'top bold inlineblock'})
 
-                vals = ['cost','Gain_or_loss','Gain_or_loss(in percent)']
-                index = 0
-
-                for spans in new_table.findAll('span', attrs= {'dir' : 'ltr'}):
+                for index, spans in enumerate(new_table.findAll('span', attrs= {'dir' : 'ltr'})):
                     new_soup = BeautifulSoup(str(spans),'html.parser')
                     company[vals[index]] = new_soup.span.text
-                    index+=1
-                
                 data.append(company)
                 time.sleep(random.uniform(0.2, 2))
             quotes.append(data)

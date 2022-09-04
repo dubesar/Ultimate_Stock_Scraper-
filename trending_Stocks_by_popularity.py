@@ -22,10 +22,7 @@ while True:
         soup = soup.find('svg',attrs = {'style':'font-family:"Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;font-size:12px;'})
         soup = soup.find('g',attrs = {'class':'highcharts-axis-labels highcharts-xaxis-labels'})
 
-        company = []
-        for rows in soup.findAll('text'):
-            company.append([rows.text])
-        
+        company = [[rows.text] for rows in soup.findAll('text')]
         soup = BeautifulSoup(res,'lxml')
         soup = soup.find('div',attrs = {'class':'trendingStocks'})
         soup = soup.find('div',attrs = {'class' : 'chartContainer'})
@@ -35,10 +32,8 @@ while True:
         soup = soup.find('g',attrs = {'class':'highcharts-series-group'})
         soup = soup.find('g',attrs = {'class': 'highcharts-series highcharts-tracker'})
 
-        index = 0
-        for rows in soup.findAll('rect'):
+        for index, rows in enumerate(soup.findAll('rect')):
             company[index].append(int(rows['height']))
-            index+=1
         print(company)
     except:
         print('Let me sleep for some time')

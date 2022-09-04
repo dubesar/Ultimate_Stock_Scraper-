@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup 
+from bs4 import BeautifulSoup
 import csv
 import time
 import random
@@ -16,10 +16,9 @@ while True:
         table = table.find('table',attrs = {'class' : 'genTbl closedTbl elpTbl elp20 crossRatesTbl'})
         table = table.find('tbody')
         allCountry = []
+        s = ['Last','High','Low','Chg','Chg%','Vol']
         for rows in table.findAll('tr'):
-            allCont = {}
-            allCont['Name'] = rows.find('a').text
-            s = ['Last','High','Low','Chg','Chg%','Vol']
+            allCont = {'Name': rows.find('a').text}
             index = 0
             ignore = 0
             for row in rows.findAll('td'):
