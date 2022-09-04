@@ -22,10 +22,7 @@ while True:
                 soup = soup.find('svg',attrs = {'style':'font-family:"Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;font-size:12px;'})
                 soup = soup.find('g',attrs = {'class':'highcharts-axis-labels highcharts-xaxis-labels'})
 
-                company = []
-                for rows in soup.findAll('text'):
-                    company.append([rows.text])
-
+                company = [[rows.text] for rows in soup.findAll('text')]
                 print(company)
             except:
                 pass
